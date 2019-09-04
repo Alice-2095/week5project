@@ -9,6 +9,8 @@ let mongoDBClient = mongodb.MongoClient;
   //connection URL
 let  url = "mongodb://" + process.argv[2] +  ":27017/";
 
+//let  url = "mongodb://localhost:27017/";
+
 let viewsPath=__dirname+"/views/"; //[path to the folder contains the html files]
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -43,7 +45,7 @@ app.post('/addnewtask', function (req, res) {
     
     let taskDetails = req.body;
         taskDetails.newId= Math.round(Math.random()*100);
-    let obj={ taskID: taskDetails.newId, tname: taskDetails.taskname, assignto: taskDetails.assignto, duedate:taskDetails.duedate, 
+    let obj={ taskID: taskDetails.newId, tname: taskDetails.taskname, assignto: taskDetails.assignto, duedate:new Date(taskDetails.ddate), 
         tstatus:taskDetails.taskstatus, tdescr:taskDetails.taskdescr};
     db.collection('w5table').insertOne(obj);
     res.redirect('/listAllTasks'); // redirect the client to list tasks page
@@ -79,6 +81,15 @@ app.post('/deletetaskdata', function (req, res) {
 
 app.post('/deletecompletedtasks', function (req, res) {
     let filter = {tstatus: "Complete" };
+    db.collection('w5table').deleteMany(filter, function (err, obj) {
+        console.log(obj.result);
+        res.redirect('/listAllTasks');// redirect the client to get all tasks page
+      });
+});
+
+//Extra task
+app.post('/deletecompletedtask1', function (req, res) {
+    let filter = {$and:[ {tstatus: "Complete"} , {$lt:{duedate:new Date()} } ] };
     db.collection('w5table').deleteMany(filter, function (err, obj) {
         console.log(obj.result);
         res.redirect('/listAllTasks');// redirect the client to get all tasks page
