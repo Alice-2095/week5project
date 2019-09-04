@@ -1,0 +1,33 @@
+<html>
+        <head>
+                <link rel="stylesheet" href="styles.css">
+        </head>
+        
+<body>
+    <h1>Get all tasks</h1> </br>
+    <h2> <a href="/">Insert Task</a>
+        <a href="/deleteTask">Delete task</a>
+        <a href="/updateTaskStatus">Update task status</a>
+    </h2>
+    <table>
+        <tr>
+            <td>Task ID</td>
+            <td>Task name</td>
+            <td>Assign to</td>
+            <td>Due date</td>
+            <td>Task status</td>
+            <td>Task Desc</td>
+        </tr>
+        <% for (let i=0;i<taskDb.length;i++){ %>
+            <tr>
+                <td> <%= taskDb[i].taskID %> </td>
+                <td> <%= taskDb[i].tname %> </td>
+                <td><%= taskDb[i].assignto %></td>
+                <td><%= taskDb[i].duedate %></td>
+                <td><%= taskDb[i].tstatus %></td>
+                <td><%= taskDb[i].tdescr %></td>
+            </tr>
+            <%}%>
+    </table>
+</body>
+</html>

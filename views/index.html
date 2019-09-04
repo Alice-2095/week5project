@@ -1,0 +1,26 @@
+<html>
+      <head>
+            <link rel="stylesheet" href="styles.css">
+    </head>
+   <body>
+
+      <img src="logo.jpeg" width="120" height="100">
+      <h1>Task database </h1>
+      <br>
+      <h2>
+          <a href = "/listAllTasks" >Get all tasks</a>
+          <a href = "/deleteTask" >Delete task</a>
+          <a href = "/updateTaskStatus" >Update task status</a><br>
+      </h2>
+
+      <form action = "/addnewtask" method ="POST">
+        Task name <input type="text" name= "taskname" /><br><br>
+        Assign to <input type="text" name= "assignto" value="name" /><br><br>
+        Due date  <input type="date" name= "duedate"/><br><br>
+        Task status <input type="radio" name="taskstatus" value="InProgress"> InProgress
+                    <input type="radio" name="taskstatus" value="Complete">Complete<br><br>
+        Task Desc <input type="text" name= "taskdescr"/><br><br>
+        <button>Submit</button1>
+      </form>
+   </body>
+</html>
