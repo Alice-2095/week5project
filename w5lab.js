@@ -6,8 +6,8 @@ let bodyParser=require('body-parser');
 
 let mongoDBClient = mongodb.MongoClient;
 
-                    //server/port no
-let  url = "mongodb://localhost:27017/";
+  //connection URL
+let  url = "mongodb://" + process.argv[2] +  ":27017/";
 
 let viewsPath=__dirname+"/views/"; //[path to the folder contains the html files]
 
@@ -19,8 +19,9 @@ app.engine('html',require('ejs').renderFile); /*express should be
 app.set('view engine','html');
 
 
-let db=null; //global
+let db=null; //global. reference to database
 
+//connect to mongoDB server
 mongoDBClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true},
     function (err, client) {
         if (err) {
@@ -36,6 +37,8 @@ app.get('/',function(req,res){
      res.sendFile(viewsPath + "index.html"); 
 });
 
+//[POST request: receive the details from the client and 
+//insert new document (i.e. object) to the collection (i.e. table)]
 app.post('/addnewtask', function (req, res) {
     
     let taskDetails = req.body;
@@ -46,7 +49,9 @@ app.post('/addnewtask', function (req, res) {
     res.redirect('/listAllTasks'); // redirect the client to list tasks page
 });
 
-
+//[Get the list of documents form the collections, 
+//send it to the rendering engine to generate an HTML to be the response.
+//The rendering engine receives an array of documents under name 'taskDB']
 app.get('/listAllTasks', function (req, res) {
      
     db.collection('w5table').find({}).toArray(function (err, data) {
@@ -55,11 +60,14 @@ app.get('/listAllTasks', function (req, res) {
     });
 });
 
-
+//send page to client to enter delete details
 app.get('/deleteTask', function (req, res) {
     res.sendFile(viewsPath + 'deleteTask.html');
 });
 
+//receive user input and do the delete
+//[sends data to server under pathname '/deletetaskdata', server listens to 
+//POST request under this pathname]
 app.post('/deletetaskdata', function (req, res) {
     let taskDetails =  req.body;
     let query = { taskID: parseInt(taskDetails.taskid) };
@@ -67,6 +75,7 @@ app.post('/deletetaskdata', function (req, res) {
     db.collection('w5table').deleteOne(query);
     res.redirect('/listAllTasks');// redirect the client to get all tasks page
 });
+
 
 app.post('/deletecompletedtasks', function (req, res) {
     let filter = {tstatus: "Complete" };
@@ -76,10 +85,14 @@ app.post('/deletecompletedtasks', function (req, res) {
       });
 });
 
+//send page to client to enter update details
 app.get('/updateTaskStatus', function (req, res) {
     res.sendFile(viewsPath + 'updateTask.html');
 });
 
+//receive user input and do the update
+//The server listens to the POST request with pathname=’updatetaskdata’ 
+//and updates the status of the document.
 app.post('/updatetaskdata', function (req, res) {
     let taskDetails =  req.body;   
     let filter = { taskID: parseInt(taskDetails.taskid) }; 
