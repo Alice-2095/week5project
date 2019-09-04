@@ -80,7 +80,7 @@ app.get('/updateTaskStatus', function (req, res) {
     res.sendFile(viewsPath + 'updateTask.html');
 });
 
-app.post('/udatetaskdata', function (req, res) {
+app.post('/updatetaskdata', function (req, res) {
     let taskDetails =  req.body;   
     let filter = { taskID: parseInt(taskDetails.taskid) }; 
     let theUpdate = { $set: { tstatus: taskDetails.taskstatus } };
