@@ -7,9 +7,9 @@ let bodyParser=require('body-parser');
 let mongoDBClient = mongodb.MongoClient;
 
   //connection URL
-let  url = "mongodb://" + process.argv[2] +  ":27017/";
+//let  url = "mongodb://" + process.argv[2] +  ":27017/";
 
-//let  url = "mongodb://localhost:27017/";
+let  url = "mongodb://localhost:27017/";
 
 let viewsPath=__dirname+"/views/"; //[path to the folder contains the html files]
 
